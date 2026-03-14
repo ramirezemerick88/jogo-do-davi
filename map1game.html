@@ -58,8 +58,8 @@ to{background-position:0 2000px;}
 
 <div id="controles">
 
-<button ontouchstart="moveleft()">⬅️</button>
-<button ontouchstart="moveright()">➡️</button>
+<button onclick="moveleft()" ontouchstart="moveleft()">⬅️</button>
+<button onclick="moveright()" ontouchstart="moveright()">➡️</button>
 
 </div>
 
@@ -78,6 +78,8 @@ myGamePiece=new component(40,70,"car6.png",200,400,"image");
 myScore=new component("30px","Impact","white",20,40,"text");
 
 myGameArea.start();
+
+ativarInclinacao();
 
 }
 
@@ -110,10 +112,6 @@ myGameArea.key=false;
 
 clear:function(){
 this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-},
-
-stop:function(){
-clearInterval(this.interval);
 }
 
 }
@@ -139,17 +137,13 @@ this.update=function(){
 ctx=myGameArea.context;
 
 if(this.type=="text"){
-
 ctx.font=this.width+" "+this.height;
 ctx.fillStyle=color;
 ctx.fillText(this.text,this.x,this.y);
-
 }
 
 if(type=="image"){
-
 ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
-
 }
 
 }
@@ -157,7 +151,6 @@ ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
 this.newPos=function(){
 
 this.x+=this.speedX;
-this.y+=this.speedY;
 
 }
 
@@ -235,8 +228,8 @@ myScore.update();
 
 myGamePiece.speedX=0;
 
-if(myGameArea.key&&myGameArea.key==37){myGamePiece.speedX=-4}
-if(myGameArea.key&&myGameArea.key==39){myGamePiece.speedX=4}
+if(myGameArea.key&&myGameArea.key==37){myGamePiece.speedX=-5}
+if(myGameArea.key&&myGameArea.key==39){myGamePiece.speedX=5}
 
 myGamePiece.newPos();
 
@@ -253,11 +246,33 @@ return false;
 }
 
 function moveleft(){
-myGamePiece.speedX=-6;
+
+myGamePiece.x-=30;
+
 }
 
 function moveright(){
-myGamePiece.speedX=6;
+
+myGamePiece.x+=30;
+
+}
+
+function ativarInclinacao(){
+
+window.addEventListener("deviceorientation",function(event){
+
+var tilt=event.gamma;
+
+if(tilt>5){
+myGamePiece.x+=5;
+}
+
+if(tilt<-5){
+myGamePiece.x-=5;
+}
+
+});
+
 }
 
 </script>
