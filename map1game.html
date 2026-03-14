@@ -15,27 +15,33 @@ background:black;
 }
 
 canvas{
+position:absolute;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
 border:1px solid #d3d3d3;
 background:url('map1.png');
 background-size:cover;
-animation: animatedBackground 5s linear infinite;
+animation:animatedBackground 5s linear infinite;
 }
 
 #controles{
 position:fixed;
-bottom:10px;
-width:100%;
+bottom:25px;
+left:50%;
+transform:translateX(-50%);
 display:flex;
-justify-content:center;
-gap:20px;
+gap:40px;
+z-index:999;
 }
 
 button{
-width:70px;
-height:70px;
-font-size:30px;
+width:90px;
+height:90px;
+font-size:40px;
 border:none;
-border-radius:10px;
+border-radius:15px;
 background:white;
 }
 
@@ -170,9 +176,7 @@ var otherbottom=otherobj.y+otherobj.height;
 var crash=true;
 
 if((mybottom<othertop)||(mytop>otherbottom)||(myright<otherleft)||(myleft>otherright)){
-
 crash=false;
-
 }
 
 return crash;
@@ -249,15 +253,11 @@ return false;
 }
 
 function moveleft(){
-
 myGamePiece.speedX=-6;
-
 }
 
 function moveright(){
-
 myGamePiece.speedX=6;
-
 }
 
 </script>
