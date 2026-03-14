@@ -1,3 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A Corrida do Davi Machado Emerick</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#222;
+overflow:hidden;
+}
+
+#game{
+
+width:100vw;
+height:100vh;
+background:#444;
+position:relative;
+overflow:hidden;
+
+}
+
+#car{
+
+position:absolute;
+width:70px;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+
+}
+
+.enemy{
+
+position:absolute;
+width:70px;
+height:70px;
+background:red;
+border-radius:10px;
+
+}
+
+#hud{
+
+position:absolute;
+top:10px;
+left:10px;
+color:white;
+font-size:18px;
+
+}
+
+#titulo{
+
+position:absolute;
+top:10px;
+right:10px;
+color:white;
+font-size:16px;
+
+}
+
+#gameover{
+
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+font-size:30px;
+display:none;
+text-align:center;
+
+}
+
+</style>
+
+</head>
+
 <body>
-<a href="selectmode.html"><img src="rfmenu.png"></img></a>
+
+<div id="game">
+
+<img id="car" src="https://upload.wikimedia.org/wikipedia/commons/6/6d/VW_Beetle_1970.png">
+
+<div id="hud">
+
+Pontuação: <span id="score">0</span>
+
+</div>
+
+<div id="titulo">
+
+🚗 A Corrida do Davi Machado Emerick
+
+</div>
+
+<div id="gameover">
+
+💥 FIM DE JOGO  
+<br><br>
+Toque para jogar novamente
+
+</div>
+
+</div>
+
+<script>
+
+let car = document.getElementById("car")
+let game = document.getElementById("game")
+let score = document.getElementById("score")
+let gameover = document.getElementById("gameover")
+
+let pontos = 0
+let acabou = false
+
+function mover(x){
+
+if(acabou) return
+
+car.style.left = x+"px"
+
+}
+
+document.addEventListener("mousemove",(e)=>{
+
+mover(e.clientX)
+
+})
+
+document.addEventListener("touchmove",(e)=>{
+
+mover(e.touches[0].clientX)
+
+})
+
+function criarInimigo(){
+
+if(acabou) return
+
+let enemy = document.createElement("div")
+
+enemy.classList.add("enemy")
+
+enemy.style.left = Math.random()*window.innerWidth+"px"
+enemy.style.top="-80px"
+
+game.appendChild(enemy)
+
+let cair = setInterval(()=>{
+
+enemy.style.top = enemy.offsetTop + 7 + "px"
+
+let carRect = car.getBoundingClientRect()
+let enemyRect = enemy.getBoundingClientRect()
+
+if(
+
+enemyRect.bottom > carRect.top &&
+enemyRect.left < carRect.right &&
+enemyRect.right > carRect.left
+
+){
+
+fimDeJogo()
+
+}
+
+if(enemy.offsetTop > window.innerHeight){
+
+enemy.remove()
+clearInterval(cair)
+
+pontos++
+score.innerText = pontos
+
+}
+
+},20)
+
+}
+
+function fimDeJogo(){
+
+acabou = true
+gameover.style.display = "block"
+
+}
+
+game.addEventListener("click",()=>{
+
+if(acabou){
+
+location.reload()
+
+}
+
+})
+
+setInterval(criarInimigo,1800)
+
+</script>
+
 </body>
+</html>
